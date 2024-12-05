@@ -16,6 +16,9 @@ const client = twilio(
   process.env.TWILIO_PHONE_NUMBER
 )
 
+const emailService = new EmailService()
+
+// Send SMS
 app.post("/send-sms", async (req, res) => {
   try {
     const { to, body } = req.body
@@ -41,6 +44,7 @@ app.post("/send-sms", async (req, res) => {
   }
 })
 
+// Get all messages (temporary set limit to 5)
 app.get("/messages", async (req, res) => {
   try {
     const messages = await client.messages.list({ limit: 5 })
@@ -61,6 +65,36 @@ app.get("/messages", async (req, res) => {
       error: "Failed to retrieve messages",
       details: error.message,
     })
+  }
+})
+
+// Send Email Endpoint
+app.post("/api/send-email", async (req, res) => {
+  try {
+    const result = await emailService.sendEmail(req.body)
+    res.status(200).json(result)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Fetch Emails Endpoint
+app.get("/api/emails", async (req, res) => {
+  try {
+    const emails = await emailService.fetchEmails()
+    res.status(200).json(emails)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Mark Email as Read Endpoint
+app.patch("/api/emails/:id/read", async (req, res) => {
+  try {
+    await emailService.markEmailAsRead(req.params.id)
+    res.status(200).json({ message: "Email marked as read" })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
   }
 })
 
