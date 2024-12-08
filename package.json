@@ -5,20 +5,26 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "node-start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
   "dependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
+    "firebase-admin": "^13.0.1",
+    "googleapis": "^144.0.0",
+    "nodemailer": "^6.9.16",
     "twilio": "^5.3.7"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.1.7"
   }
 }

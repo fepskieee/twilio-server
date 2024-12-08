@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+serviceAccountKey.json
+token.json
+credentials.json
