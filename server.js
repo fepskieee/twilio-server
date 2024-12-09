@@ -73,7 +73,6 @@ app.post("/outgoing-call", async (req, res) => {
 })
 
 app.post("/twiml", (req, res) => {
-  twiml.say("This is outbound-call")
   twiml.dial().client("client")
 
   res.type("text/xml")
@@ -81,7 +80,6 @@ app.post("/twiml", (req, res) => {
 })
 
 app.post("/incoming-call", async (req, res) => {
-  twiml.say("This is inbound-call")
   twiml.dial().client("client")
 
   res.type("text/xml")
