@@ -26,6 +26,7 @@ const twiml = new twilio.twiml.VoiceResponse()
 app.get("/token", (req, res) => {
   const AccessToken = twilio.jwt.AccessToken
   const VoiceGrant = AccessToken.VoiceGrant
+  const VideoGrant = AccessToken.VideoGrant
 
   const token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
@@ -39,7 +40,12 @@ app.get("/token", (req, res) => {
     outgoingApplicationSid: process.env.TWILIO_TWIML_APP_SID,
   })
 
+  const videoGrant = new VideoGrant({
+    room: "DailyStandupRoom",
+  })
+
   token.addGrant(voiceGrant)
+  token.addGrant(videoGrant)
 
   res.json({
     token: token.toJwt(),
@@ -59,7 +65,6 @@ app.post("/outgoing-call", async (req, res) => {
     res.status(200).json({
       success: true,
       callsid: call.sid,
-      // token: token.toJwt(),
     })
   } catch (error) {
     console.log(error)
