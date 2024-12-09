@@ -29,12 +29,7 @@ class GmailService {
 
   async sendEmail(emailData) {
     try {
-      await this.transporter.sendMail({
-        from: process.env.EMAIL,
-        to: emailData.to,
-        subject: emailData.subject,
-        text: emailData.body,
-      })
+      await this.transporter.sendMail(emailData)
 
       return {
         status: "success",

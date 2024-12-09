@@ -2,6 +2,7 @@ import express from "express"
 import twilio from "twilio"
 import dotenv from "dotenv"
 import cors from "cors"
+import multer from "multer"
 import GmailService from "./services/GmailService.js"
 
 dotenv.config()
@@ -9,10 +10,13 @@ dotenv.config()
 const PORT = process.env.PORT || 80
 
 const app = express()
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
+const attachments = upload.array("attachments[]")
+
 app.use(express.json())
 app.use(cors())
 
-// Gmail Service
 const gmailService = new GmailService()
 gmailService.execute()
 
@@ -134,9 +138,23 @@ app.get("/inbox", async (req, res) => {
   }
 })
 
-app.post("/api/send-email", async (req, res) => {
+app.post("/send-email", attachments, async (req, res) => {
   try {
-    const result = await gmailService.sendEmail(req.body)
+    const { to, subject, body } = req.body
+    const attachmentFiles = req.files.map((file) => ({
+      filename: file.originalname,
+      content: file.buffer,
+    }))
+
+    const emailData = {
+      from: process.env.EMAIL,
+      to: to,
+      subject: subject,
+      text: body,
+      attachments: attachmentFiles,
+    }
+
+    const result = await gmailService.sendEmail(emailData)
     res.status(200).json(result)
   } catch (error) {
     res.status(500).json({ error: error.message })
