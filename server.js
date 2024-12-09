@@ -110,9 +110,9 @@ app.post("/send-sms", async (req, res) => {
 })
 
 // Get all Twilio messages (temporary set limit to 5)
-app.get("/messages", async (req, res) => {
+app.get("/inbox", async (req, res) => {
   try {
-    const messages = await client.messages.list({ limit: 5 })
+    const messages = await client.messages.list()
 
     const formattedMessages = messages.map((message) => ({
       sid: message.sid,
