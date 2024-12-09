@@ -7,7 +7,6 @@ import GmailService from "./services/GmailService.js"
 dotenv.config()
 
 const PORT = process.env.PORT || 80
-const SERVER = `http://localhost:${PORT}`
 
 const app = express()
 app.use(express.json())
@@ -109,7 +108,6 @@ app.post("/send-sms", async (req, res) => {
   }
 })
 
-// Get all Twilio messages (temporary set limit to 5)
 app.get("/inbox", async (req, res) => {
   try {
     const messages = await client.messages.list()
@@ -133,7 +131,6 @@ app.get("/inbox", async (req, res) => {
   }
 })
 
-// Send Email Endpoint
 app.post("/api/send-email", async (req, res) => {
   try {
     const result = await gmailService.sendEmail(req.body)
