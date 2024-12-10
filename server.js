@@ -100,7 +100,7 @@ app.post("/send-sms", async (req, res) => {
       to: to,
     })
 
-    console.log(message.body)
+    console.log(message)
 
     res.status(200).json({
       success: true,
